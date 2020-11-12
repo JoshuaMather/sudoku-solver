@@ -1,0 +1,18 @@
+get sudoku board from text file
+display board in window
+csp to remove moves that cant be done
+attempt moves and backtrack if no further moves can be made
+update board with moves
+
+display class
+- visual representation of the solving ocurring
+
+sudoku class
+- main driver class
+
+square class
+- class for each square on the board
+- contains value, row, column and box 
+
+sudoku state class
+- records state of board 

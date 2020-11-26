@@ -9,7 +9,6 @@ import java.io.IOException;
  * class for the state of the sudoku board
  */
 public class SudokuState {
-    //private int[][] sudokuValues = new int[9][9];
     private Square[][] squares = new Square[9][9];
 
     public SudokuState(String file) throws FileNotFoundException {
@@ -63,6 +62,10 @@ public class SudokuState {
 
     public Square[][] getSquares(){
         return squares;
+    }
+
+    public int getSquareVal(int x, int y){
+        return squares[x][y].getValue();
     }
 
     // method for testing file read correctly

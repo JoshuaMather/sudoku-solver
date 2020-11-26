@@ -9,6 +9,8 @@ import java.util.Scanner;
 public class Sudoku {
 
     public static void main(String args[]) throws FileNotFoundException {
+        SudokuState ss = null;
+
         Scanner in = new Scanner(System.in);
         String file = "";
         while(file == ""){
@@ -17,7 +19,7 @@ public class Sudoku {
             try{
                 file = s;
                 file = "boards/" + file;
-                SudokuState ss = new SudokuState(file);
+                ss = new SudokuState(file);
                 //ss.printSquares();
             }catch(Exception e){
                 System.out.println("Enter a valid file");
@@ -25,6 +27,11 @@ public class Sudoku {
                 System.out.println("");
             }
         }
+
+        SudokuDisplay sudokuDisplay = new SudokuDisplay();
+        sudokuDisplay.sudokuState = ss;
+        sudokuDisplay.repaint();
+
         
     }
 }

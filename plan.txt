@@ -13,6 +13,7 @@ sudoku class
 square class
 - class for each square on the board
 - contains value, row, column and box 
+- boolean for if it is set in the input file
 
 sudoku state class
 - records state of board 

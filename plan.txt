@@ -3,12 +3,16 @@ display board in window
 csp to remove moves that cant be done
 attempt moves and backtrack if no further moves can be made
 update board with moves
+(maybe add counter)
 
 display class
 - visual representation of the solving ocurring
+- use JPanels and JLabels
+(maybe make layout more sudoku-like)
 
 sudoku class
 - main driver class
+- handles reading in text file
 
 square class
 - class for each square on the board
@@ -17,3 +21,7 @@ square class
 
 sudoku state class
 - records state of board 
+
+
+CHANGE: Switch to labels
+- results in a nicer way of setting and updating values and won't cause the window to flicker when values updated

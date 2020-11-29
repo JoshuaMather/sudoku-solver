@@ -2,123 +2,95 @@ package src;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.Dimension;
+import java.awt.BorderLayout;
 
-import java.awt.BasicStroke;
-import java.awt.Stroke;
- 
+
 /**
  * Display for the sudoku board
  */
-public class SudokuDisplay extends JFrame implements MouseListener {
-    // constants for sizes of various parts of the application
-    public static final int grid_size = 11;
-    public static final int box_size = 3;
-
-    public static final int square_size = 60;
-    public static final int width = square_size * grid_size;
-    public static final int height = square_size * grid_size;
-
-    int xBoardstart;
-    int yBoardstart;
-
-    public static final int xBOARDpos = 40; // Position of board
-    public static final int yBOARDpos = 40; // Position of board
-    public static final int xMARGIN= 50;   // Position of board
-    public static final int yMARGIN= 10;   // Position of board
-
-    private final Color backgroundColour = Color.white;
+public class SudokuDisplay extends JFrame implements ActionListener {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -4543169644495325055L;
     public SudokuState sudokuState;
-
+    private JLabel[][] labels = new JLabel[9][9];
+    private Boolean started = false;
     private Boolean clicked = false;
 
-    /**
-     * constructor for the display
-     */
-    public SudokuDisplay() {
-        xBoardstart= xMARGIN;
-        yBoardstart= 2*yMARGIN;
-
-        setSize(width, height);
-        setLocation(xBOARDpos, yBOARDpos);
-        getContentPane().setBackground(backgroundColour);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public SudokuDisplay(SudokuState ss) {
+        sudokuState = ss;
+        setUp();
     }
 
-    public void paint(Graphics g) {
-        super.paint(g);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
-
-        // Draw the grid
-        int x, y;
-        x= xBoardstart;
-        y= yBoardstart;
-
-        Graphics2D g2d = (Graphics2D) g;
-        for(int i= 0; i < 10;i++){ 
-            if((i)%3==0){
-                g2d.setStroke(new BasicStroke(4f));
-            }else{
-                g2d.setStroke(new BasicStroke(2f));
-            }
-            g2d.drawLine(x,yBoardstart,x,yBoardstart+9*square_size-1);          
-            x+= square_size;
-            g2d.drawLine(xBoardstart,y,xBoardstart+9*square_size-1,y);
-            y+= square_size;
-        }
-        g2d.drawString("Click to start solving", 50, 600);
-
-        // put initial values on board
-        drawValues(g, x, y);
-    }
-
-    public void drawValues(Graphics g, int x, int y){
-        for(int i= 0; i < 9;i++)
-            for(int j= 0; j < 9; j++){
-                x = xBoardstart+ i*square_size+ square_size/2;
-                y = yBoardstart+ j*square_size+ square_size/2;
-                if(sudokuState.getSquareVal(j, i)!=0){
-                    g.drawString(String.valueOf(sudokuState.getSquareVal(j, i)), x-5, y+5);
+    public void setUp(){
+        for(int i=0; i<9; i++){
+            for(int j=0; j<9; j++){
+                labels[i][j] = new JLabel();
             }
         }
+
+        JButton startButton = new JButton("Start Solving");
+        startButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                startButton.setEnabled(false);
+                startSolve();
+            }
+        });       
+
+        JPanel panel = new JPanel(new BorderLayout());
+        JPanel layout = new JPanel(new GridBagLayout());
+
+        JPanel labelsPanel = new JPanel(new GridLayout(10,1,10,5));    
+
+        for(int x=0; x<9; x++){
+            JPanel j = new JPanel();
+            for(int y=0; y<9; y++){
+                j.add(labels[x][y]);
+            }
+            labelsPanel.add(j);
+        }
+        layout.add(labelsPanel);
+        layout.add(startButton);
+
+        panel.add(layout, BorderLayout.CENTER);
+
+        JFrame frame = new JFrame("Sudoku Solver");
+        frame.add(panel);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(400, 300));
+        frame.pack();
+        frame.setLocationByPlatform(true);
+        frame.setVisible(true);
+
+        updateValues();
+    }
+
+    public void updateValues() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                labels[i][j].setText(String.valueOf(sudokuState.getSquareVal(i, j)));
+            }
+        }
+    }
+
+    public void startSolve() {        
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
+    public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
 
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
 }
 

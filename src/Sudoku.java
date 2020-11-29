@@ -28,8 +28,7 @@ public class Sudoku {
             }
         }
 
-        SudokuDisplay sudokuDisplay = new SudokuDisplay();
-        sudokuDisplay.sudokuState = ss;
+        SudokuDisplay sudokuDisplay = new SudokuDisplay(ss);
         sudokuDisplay.repaint();
 
         

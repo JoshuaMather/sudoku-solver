@@ -21,7 +21,13 @@ public class Square {
         box = b;
         if(value!=0){
             set = true;
+        }else{
+            set = false;
         }
+    }
+
+    public void setValue(int v){
+        value = v;
     }
 
     public int getValue(){

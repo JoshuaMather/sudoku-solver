@@ -10,8 +10,7 @@ public class Square {
     private int row; // 0 to 8, top to bottom
     private int col; // 0 to 8 left to right
     private int box; // 0 to 8, left to right, top to bottom
-    Boolean set; // true if set initially, false otherwise
-
+    private Boolean set; // true if set initially, false otherwise
     private ArrayList<Integer> possibleVals = new ArrayList<Integer>();
 
     public Square(int v, int r, int c, int b){
@@ -46,11 +45,19 @@ public class Square {
         return box;
     }
 
+    public Boolean isSet(){
+        return set;
+    }
+
     public ArrayList<Integer> getPossibleVals(){
         return possibleVals;
     }
 
     public void addPossibleVal(int value){
         possibleVals.add(value);
+    }
+
+    public void clearPossibleVals(){
+        possibleVals = new ArrayList<Integer>();
     }
 }

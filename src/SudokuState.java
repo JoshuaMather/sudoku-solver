@@ -77,4 +77,51 @@ public class SudokuState {
             System.out.println("");
         }
     }
+
+    public Boolean checkConstraint(Square square){
+        if(checkRowConstraint(square) && checkColConstraint(square) && checkBoxConstraint(square)){
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean checkRowConstraint(Square square){
+        int row = square.getRow();
+        for(int i = 0; i<9; i++){
+            if(squares[row][i]!=square){
+                if(squares[row][i].getValue() == square.getValue()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public Boolean checkColConstraint(Square square){
+        int col = square.getCol();
+        for(int i = 0; i<9; i++){
+            if(squares[i][col]!=square){
+                if(squares[i][col].getValue() == square.getValue()){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public Boolean checkBoxConstraint(Square square){
+        int box = square.getBox();
+        for(int i=0; i<9; i++){
+            for(int j=0; j<9; j++){
+                if(squares[i][j].getBox()==box){
+                    if(squares[i][j]!=square){
+                        if(squares[i][j].getValue() == square.getValue()){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

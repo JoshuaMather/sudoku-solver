@@ -22,8 +22,6 @@ public class SudokuDisplay extends JFrame implements ActionListener {
     private static final long serialVersionUID = -4543169644495325055L;
     public SudokuState sudokuState;
     private JLabel[][] labels = new JLabel[9][9];
-    private Boolean started = false;
-    private Boolean clicked = false;
 
     public SudokuDisplay(SudokuState ss) {
         sudokuState = ss;
@@ -73,6 +71,8 @@ public class SudokuDisplay extends JFrame implements ActionListener {
         frame.setVisible(true);
 
         updateValues();
+
+       
     }
 
     public void updateValues() {
@@ -83,7 +83,56 @@ public class SudokuDisplay extends JFrame implements ActionListener {
         }
     }
 
-    public void startSolve() {        
+    public Boolean startSolve() {   
+        Square[][] squares = sudokuState.getSquares();
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                squares[i][j].clearPossibleVals();
+            }
+        }     
+
+         // set the possible values for each square
+         for(int i=0; i<9; i++){
+             for(int j=0; j<9; j++){
+                 if(!squares[i][j].isSet()){
+                     for(int k=1; k<10; k++){
+                         int oldVal = squares[i][j].getValue();
+                         squares[i][j].setValue(k);
+                         if(sudokuState.checkConstraint(squares[i][j])){
+                             squares[i][j].addPossibleVal(k);
+                         }   
+                         squares[i][j].setValue(oldVal);  
+                     }
+                 }
+             }
+         }
+        
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if(squares[i][j].getValue()==0){
+                    for(int k=0; k<squares[i][j].getPossibleVals().size(); k++){
+                        squares[i][j].setValue(squares[i][j].getPossibleVals().get(k));
+
+                        updateValues();
+
+                        // try{
+                        //     Thread.sleep(1000);
+                        // }catch (InterruptedException e){
+                        //     e.printStackTrace();
+                        // }
+                        if(startSolve()){
+                            return true;
+                        }else{
+                            squares[i][j].setValue(0);
+                        }
+                    }
+                    return false;
+                }
+            }
+        }  
+        updateValues();
+
+        return true;
     }
 
     @Override

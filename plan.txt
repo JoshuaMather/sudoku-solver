@@ -8,7 +8,8 @@ update board with moves
 display class
 - visual representation of the solving ocurring
 - use JPanels and JLabels
-(maybe make layout more sudoku-like)
+(maybe make layout more sudoku-like using a grid and a blank space instead of 0)
+- start solving button that starts the recursive solving
 
 sudoku class
 - main driver class
@@ -18,9 +19,11 @@ square class
 - class for each square on the board
 - contains value, row, column and box 
 - boolean for if it is set in the input file
+- contains array of possible values
 
 sudoku state class
 - records state of board 
+- contains the constraint rules 
 
 
 CHANGE: Switch to labels

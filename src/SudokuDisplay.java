@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -40,7 +42,7 @@ public class SudokuDisplay extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e){
                 startButton.setEnabled(false);
-                startSolve();
+                startSolve(sudokuState.getSquares());
             }
         });       
 
@@ -71,67 +73,45 @@ public class SudokuDisplay extends JFrame implements ActionListener {
         frame.setVisible(true);
 
         updateValues();
-
-       
     }
 
     public void updateValues() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 labels[i][j].setText(String.valueOf(sudokuState.getSquareVal(i, j)));
+                labels[i][j].paintImmediately(labels[i][j].getVisibleRect());
             }
         }
     }
 
-    public Boolean startSolve() {   
-        Square[][] squares = sudokuState.getSquares();
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                squares[i][j].clearPossibleVals();
-            }
-        }     
-
-         // set the possible values for each square
-         for(int i=0; i<9; i++){
-             for(int j=0; j<9; j++){
-                 if(!squares[i][j].isSet()){
-                     for(int k=1; k<10; k++){
-                         int oldVal = squares[i][j].getValue();
-                         squares[i][j].setValue(k);
-                         if(sudokuState.checkConstraint(squares[i][j])){
-                             squares[i][j].addPossibleVal(k);
-                         }   
-                         squares[i][j].setValue(oldVal);  
-                     }
-                 }
-             }
-         }
-        
+    public Boolean startSolve(Square[][] squares) {   
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if(squares[i][j].getValue()==0){
-                    for(int k=0; k<squares[i][j].getPossibleVals().size(); k++){
+                    ArrayList<Integer> vals = sudokuState.findPossibleVals(squares[i][j]);
+                    for(int k=0; k<vals.size(); k++){
                         squares[i][j].setValue(squares[i][j].getPossibleVals().get(k));
-
                         updateValues();
 
-                        // try{
-                        //     Thread.sleep(1000);
-                        // }catch (InterruptedException e){
-                        //     e.printStackTrace();
-                        // }
-                        if(startSolve()){
+                        try{
+                            Thread.sleep(500);
+                        }catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
+
+                        if(startSolve(squares)){
                             return true;
                         }else{
                             squares[i][j].setValue(0);
+                            updateValues();
                         }
                     }
                     return false;
                 }
             }
         }  
-        updateValues();
 
+        updateValues();
         return true;
     }
 

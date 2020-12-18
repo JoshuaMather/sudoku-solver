@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * class for the state of the sudoku board
@@ -123,5 +124,18 @@ public class SudokuState {
             }
         }
         return true;
+    }
+
+    public ArrayList<Integer> findPossibleVals(Square square){
+        int startVal = square.getValue();
+        square.clearPossibleVals();
+        for(int i=1; i<10; i++){
+            square.setValue(i);
+            if(checkConstraint(square)){
+                square.addPossibleVal(i);
+            }
+        }
+        square.setValue(startVal);
+        return square.getPossibleVals();
     }
 }

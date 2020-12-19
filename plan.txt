@@ -30,10 +30,7 @@ sudoku state class
 CHANGE: Switch to labels
 - results in a nicer way of setting and updating values and won't cause the window to flicker when values updated
 
-FIXED Issue: Stops executing before finished - may relate to possible values
-
 
 Future updates:
 - Improve UI 
-- Add option to not use timer
 - Add option to solve new without closing program

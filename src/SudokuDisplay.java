@@ -7,7 +7,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.Dimension;
@@ -18,12 +21,10 @@ import java.awt.BorderLayout;
  * Display for the sudoku board
  */
 public class SudokuDisplay extends JFrame implements ActionListener {
-    /**
-     *
-     */
     private static final long serialVersionUID = -4543169644495325055L;
     public SudokuState sudokuState;
     private JLabel[][] labels = new JLabel[9][9];
+    private Boolean timer;
 
     public SudokuDisplay(SudokuState ss) {
         sudokuState = ss;
@@ -37,14 +38,26 @@ public class SudokuDisplay extends JFrame implements ActionListener {
             }
         }
 
+        JCheckBox checkbox = new JCheckBox("Show Steps");
+
         JButton startButton = new JButton("Start Solving");
         startButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
                 startButton.setEnabled(false);
+                checkbox.setEnabled(false);
+                if(checkbox.isSelected()){
+                    timer = true;
+                }else{
+                    timer = false;
+                }
                 startSolve(sudokuState.getSquares());
             }
-        });       
+        });    
+        JPanel bcpanel = new JPanel();
+        bcpanel.setLayout(new BoxLayout(bcpanel, BoxLayout.Y_AXIS));   
+        bcpanel.add(startButton);
+        bcpanel.add(checkbox);
 
         JPanel panel = new JPanel(new BorderLayout());
         JPanel layout = new JPanel(new GridBagLayout());
@@ -59,7 +72,9 @@ public class SudokuDisplay extends JFrame implements ActionListener {
             labelsPanel.add(j);
         }
         layout.add(labelsPanel);
-        layout.add(startButton);
+        layout.add(bcpanel);
+        // layout.add(startButton);
+        // layout.add(checkbox);
 
         panel.add(layout, BorderLayout.CENTER);
 
@@ -93,11 +108,14 @@ public class SudokuDisplay extends JFrame implements ActionListener {
                         squares[i][j].setValue(squares[i][j].getPossibleVals().get(k));
                         updateValues();
 
-                        try{
-                            Thread.sleep(500);
-                        }catch (InterruptedException e){
-                            e.printStackTrace();
+                        if(timer==true){
+                            try{
+                                Thread.sleep(500);
+                            }catch (InterruptedException e){
+                                e.printStackTrace();
+                            }
                         }
+                        
 
                         if(startSolve(squares)){
                             return true;

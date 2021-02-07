@@ -34,3 +34,4 @@ CHANGE: Switch to labels
 Future updates:
 - Improve UI 
 - Add option to solve new without closing program
+- Implement on a website
